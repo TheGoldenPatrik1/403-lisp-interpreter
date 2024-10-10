@@ -11,18 +11,12 @@ This is a basic interpreter for the [Lisp](https://en.wikipedia.org/wiki/Lisp_(p
 
 1. Install [Java](https://www.java.com/en/download/).
 2. Execute `make` or `make run` for a REPL environment.
-3. Alternately, execute `make run <input filepath>` to run a file of Lisp code.
-4. If you are on Windows, you can compile and run the program with the following commands:
-    - `cd src`
-    - `javac lispinterpreter/Lisp.java`
-    - `java lispinterpreter.Lisp [input filepath]`
+3. Alternately, execute `make run <input filepath>` to run a file of Lisp code. Note that the makefile will search the repository for the file, so there's no need to provide the full filepath.
+4. If you are on Windows, you can compile and run the program manually using `javac` and `java lispinterpreter.Lisp [input filepath]`.
 
 ## Testing
 
 ### Steps to Run Test Harness
 
 1. Execute `make test`.
-2. If you are on Windows, you can compile and run the tests with the following commands:
-    - `cd src`
-    - `javac lispinterpreter/Lisp.java`
-    - `java lispinterpreter.Lisp test`
+2. If you are on Windows, you can compile manually using `javac` and run the tests using `java lispinterpreter.Lisp test`.
