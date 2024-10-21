@@ -5,6 +5,11 @@ import java.util.Scanner;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@FunctionalInterface
+interface FileRunner {
+    void run(String filePath);
+}
+
 public class Lisp {
     public static void main(String[] args) {
         if (args.length > 0) {
@@ -51,7 +56,7 @@ public class Lisp {
     }
 
     private static void runTests() {
-        System.out.println("Running tests...");
-        System.out.println("Success!");
+        TestHarness testHarness = new TestHarness(Lisp::runFile);
+        testHarness.run();
     }
 }
