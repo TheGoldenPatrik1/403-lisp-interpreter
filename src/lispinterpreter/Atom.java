@@ -15,6 +15,14 @@ public class Atom extends SExpr {
         this.value = value;
     }
 
+    public Atom(Nil value) {
+        this.value = value;
+    }
+
+    public Atom(Truth value) {
+        this.value = value;
+    }
+
     public Object getValue() {
         return value;
     }
@@ -26,6 +34,10 @@ public class Atom extends SExpr {
             return "string";
         } else if (value instanceof Symbol) {
             return "symbol";
+        } else if (value instanceof Nil) {
+            return "nil";
+        } else if (value instanceof Truth) {
+            return "truth";
         } else {
             return "unknown";
         }
@@ -41,6 +53,14 @@ public class Atom extends SExpr {
 
     public boolean isSymbol() {
         return value instanceof Symbol;
+    }
+
+    public boolean isNil() {
+        return value instanceof Nil;
+    }
+
+    public boolean isTruth() {
+        return value instanceof Truth;
     }
 
     @Override
