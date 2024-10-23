@@ -1,1 +1,0 @@
-cons(atom(“one”) , cons(atom(“two”) , cons(atom(“three”) , nil)))

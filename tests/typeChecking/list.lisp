@@ -1,0 +1,8 @@
+(print (list? (1 2 3)))
+(print (list? ()))
+(print (list? (nil)))
+(print (list? nil))
+(print (list? 42))
+(print (list? "hello"))
+(print (list? some-symbol))
+(print (list? (cons 1 2))) 

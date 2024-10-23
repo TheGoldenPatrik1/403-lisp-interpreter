@@ -1,0 +1,5 @@
+(print (= "hello" "hello"))
+(print (= "Hello" "hello"))
+(print (= "Lisp" "Lisp"))
+(print (= "test" "TEST"))
+(print (= "" ""))

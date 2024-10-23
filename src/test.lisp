@@ -1,1 +1,1 @@
-eval(list(1 2 'a'))
+(print (not (not truth)))

@@ -1,0 +1,5 @@
+6.0
+-5.0
+24.0
+0.0
+Error: Arithmetic operations must have at least two parameters

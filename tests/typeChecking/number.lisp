@@ -1,0 +1,8 @@
+(print (number? 42))
+(print (number? 3.14))
+(print (number? -10))
+(print (number? 0))
+(print (number? some-symbol))
+(print (number? "123"))
+(print (number? nil))
+(print (number? (1 2 3)))

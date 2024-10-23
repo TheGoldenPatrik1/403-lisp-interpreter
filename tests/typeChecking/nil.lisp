@@ -1,0 +1,7 @@
+(print (nil? nil))
+(print (nil? 0))
+(print (nil? some-symbol))
+(print (nil? ""))
+(print (nil? 42))
+(print (nil? (1 2 3)))
+(print (nil? (nil)))
