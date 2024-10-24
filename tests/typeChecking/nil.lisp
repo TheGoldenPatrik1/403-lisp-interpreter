@@ -5,3 +5,4 @@
 (print (nil? 42))
 (print (nil? (1 2 3)))
 (print (nil? (nil)))
+(print (nil? (quote nil)))

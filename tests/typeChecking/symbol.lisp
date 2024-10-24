@@ -6,3 +6,4 @@
 (print (symbol? "hello"))
 (print (symbol? (1 2 3)))
 (print (symbol? truth))
+(print (symbol? (quote some-symbol)))

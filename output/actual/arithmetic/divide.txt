@@ -2,4 +2,4 @@
 3.0
 3.5
 Infinity
-Error: Arithmetic operations must have at least two parameters
+Error on line 5: Arithmetic operations must have at least two parameters

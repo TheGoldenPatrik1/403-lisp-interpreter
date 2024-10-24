@@ -2,4 +2,4 @@
 4.0
 -1.0
 0.0
-Error: % function must have exactly two parameters
+Error on line 5: % function must have exactly two parameters

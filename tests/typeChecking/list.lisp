@@ -5,4 +5,5 @@
 (print (list? 42))
 (print (list? "hello"))
 (print (list? some-symbol))
-(print (list? (cons 1 2))) 
+(print (list? (cons 1 2)))
+(print (list? (quote (1 2 3))))

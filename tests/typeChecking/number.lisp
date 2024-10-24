@@ -6,3 +6,4 @@
 (print (number? "123"))
 (print (number? nil))
 (print (number? (1 2 3)))
+(print (number? (quote 1)))
