@@ -1,0 +1,11 @@
+TRUTH
+NIL
+NIL
+NIL
+TRUTH
+NIL
+NIL
+TRUTH
+NIL
+NIL
+Error on line 11: Arithmetic operations must have at least two parameters
