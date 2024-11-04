@@ -3,6 +3,7 @@ package lispinterpreter;
 import java.util.List;
 import java.util.Map;
 import java.rmi.RMISecurityException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Interpreter {
@@ -26,8 +27,38 @@ public class Interpreter {
         }
     }
 
+    public Object visitDefine(List<SExpr> parameters) {
+        String name = parameters.get(0).toString();
+        SExprList following = new SExprList();
+        following.add(parameters.get(1));
+        following.add(parameters.get(2));
+        Function func = new Function(name, following);
+        environment.put(name, func);
+        return null;
+    }
+
     public Object visitFunction(Function function) {
-        // TODO: implement user-defined functions
+        if (environment.get(function.getValue()) == null) {
+            throw new RuntimeException("called undefined function");
+        }
+        Function definition = (Function) environment.get(function.getValue());
+        SExprList param = definition.getParameters();
+        String var = param.getList().get(0).toString();
+
+        String stripped = var.replaceAll("[()]", "");
+        String[] split = stripped.trim().split("\\s+");
+        List<String> listVar = Arrays.asList(split);
+
+        List<SExpr> listIn = function.getParameters().getList();
+
+        for (int i = 0; i < listVar.size(); i++) {
+            environment.put(listVar.get(i), listIn.get(i));
+        }
+        List<SExpr> body = param.getList().subList(1, param.getList().size());
+
+        for (SExpr statement : body) {
+            return statement.accept(this);
+        }
         return null;
     }
 
@@ -133,8 +164,7 @@ public class Interpreter {
             case "set":
                 return visitSetStatement(parameters);
             case "define":
-                // TODO: implement define
-                return null;
+                return visitDefine(parameters);
             default:
                 throw new RuntimeException("Unknown global function: " + functionName);
         }
