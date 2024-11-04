@@ -127,11 +127,9 @@ public class Interpreter {
                 // should we accept the parameters here?
                 return new Cons(parameters.get(0), parameters.get(1)).accept(this);
             case "car":
-                // TODO: implement car
-                return null;
+                return visitCarStatement(parameters);
             case "cdr":
-                // TODO: implement cdr
-                return null;
+                return visitCdrStatement(parameters);
             case "print":
                 return visitPrintStatement(parameters);
             case "quote":
@@ -451,5 +449,26 @@ public class Interpreter {
             return paramSecond.accept(this);
         }
         return Nil.INSTANCE;
+    }
+
+    private Object visitCarStatement(List<SExpr> parameters) {
+        SExprList list = (SExprList) parameters.get(0);
+        List<SExpr> separate = list.getList();
+        if (separate.isEmpty())
+            return Nil.INSTANCE;
+        return separate.get(0);
+    }
+
+    private Object visitCdrStatement(List<SExpr> parameters) {
+        SExprList list = (SExprList) parameters.get(0);
+        List<SExpr> separate = list.getList();
+        SExprList newList = new SExprList();
+        for (int i = 1; i < separate.size(); i++) {
+            newList.add(separate.get(i));
+        }
+        if (newList.getList().isEmpty()) {
+            return Nil.INSTANCE;
+        }
+        return newList;
     }
 }
