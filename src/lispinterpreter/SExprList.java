@@ -2,6 +2,7 @@ package lispinterpreter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SExprList extends SExpr {
     private List<SExpr> expressions;
@@ -19,8 +20,8 @@ public class SExprList extends SExpr {
     }
 
     @Override
-    public Object accept(Interpreter visitor) {
-        return visitor.visitSExprList(this);
+    public Object accept(Interpreter visitor, Map<String, Object> localEnvironment) {
+        return visitor.visitSExprList(this, localEnvironment);
     }
 
     @Override

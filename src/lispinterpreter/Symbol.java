@@ -1,5 +1,7 @@
 package lispinterpreter;
 
+import java.util.Map;
+
 public class Symbol extends SExpr {
     private String value;
 
@@ -12,8 +14,8 @@ public class Symbol extends SExpr {
     }
 
     @Override
-    public Object accept(Interpreter visitor) {
-        return visitor.visitSymbol(this);
+    public Object accept(Interpreter visitor, Map<String, Object> localEnvironment) {
+        return visitor.visitSymbol(this, localEnvironment);
     }
 
     @Override

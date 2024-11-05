@@ -1,5 +1,7 @@
 package lispinterpreter;
 
+import java.util.Map;
+
 public class Cons extends SExpr {
 
     private SExpr car;
@@ -19,8 +21,8 @@ public class Cons extends SExpr {
     }
 
     @Override
-    public Object accept(Interpreter visitor) {
-        return visitor.visitCons(this);
+    public Object accept(Interpreter visitor, Map<String, Object> localEnvironment) {
+        return visitor.visitCons(this, localEnvironment);
     }
 
     @Override

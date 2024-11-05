@@ -1,5 +1,7 @@
 package lispinterpreter;
 
+import java.util.Map;
+
 public class Function extends Symbol {
     private SExprList parameters;
 
@@ -12,8 +14,8 @@ public class Function extends Symbol {
         return parameters;
     }
 
-    public Object accept(Interpreter interpreter) {
-        return interpreter.visitFunction(this);
+    public Object accept(Interpreter interpreter, Map<String, Object> localEnvironment) {
+        return interpreter.visitFunction(this, localEnvironment);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package lispinterpreter;
 
+import java.util.Map;
+
 public class Atom extends SExpr {
     private Object value;
 
@@ -50,8 +52,8 @@ public class Atom extends SExpr {
     }
 
     @Override
-    public Object accept(Interpreter visitor) {
-        return visitor.visitAtom(this);
+    public Object accept(Interpreter visitor, Map<String, Object> localEnvironment) {
+        return visitor.visitAtom(this, localEnvironment);
     }
 
     @Override

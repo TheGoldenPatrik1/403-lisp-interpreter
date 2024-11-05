@@ -1,5 +1,7 @@
 package lispinterpreter;
 
+import java.util.Map;
+
 public class Nil extends Atom {
 
     public static final Nil INSTANCE = new Nil();
@@ -8,7 +10,7 @@ public class Nil extends Atom {
     }
 
     @Override
-    public Object accept(Interpreter visitor) {
+    public Object accept(Interpreter visitor, Map<String, Object> localEnvironment) {
         return visitor.visitNil();
     }
 

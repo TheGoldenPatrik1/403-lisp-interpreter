@@ -1,5 +1,7 @@
 package lispinterpreter;
 
+import java.util.Map;
+
 public class Truth extends Atom {
 
     public static final Truth INSTANCE = new Truth();
@@ -8,7 +10,7 @@ public class Truth extends Atom {
     }
 
     @Override
-    public Object accept(Interpreter visitor) {
+    public Object accept(Interpreter visitor, Map<String, Object> localEnvironment) {
         return visitor.visitTruth();
     }
 
