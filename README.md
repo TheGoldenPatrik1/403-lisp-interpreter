@@ -1,6 +1,6 @@
 # Lisp Interpreter
 
-This is a basic interpreter for the [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)) programming language, implemented using [Java](https://www.java.com/en/).
+This is a basic interpreter for the [Lisp](<https://en.wikipedia.org/wiki/Lisp_(programming_language)>) programming language, implemented using [Java](https://www.java.com/en/).
 
 ## The Team
 
@@ -17,7 +17,8 @@ This is a basic interpreter for the [Lisp](https://en.wikipedia.org/wiki/Lisp_(p
 ## Challenges
 
 In addition to implementing the basic requirements for this project, we also extended the language by implementing the following "challenge" features:
-* `+`, `-`, etc can take more than two arguments.
+
+- `+`, `-`, etc can take more than two arguments.
 
 ## Testing
 
@@ -25,22 +26,23 @@ We added tests as we proceeded through each sprint, in order to test features as
 
 ### Testing Plan
 
-We have **39** test files, each with multiple tests, collectively covering every aspect of the Lisp programming language that we implemented. They are divided into the following categories:
-* **arithmetic**
-    * Tests `+`, `-`, `/`, `*`, `%`, and combinations thereof.
-* **equality** -
-    * Tests `>`, `>=`, `<`, and `<=` for numbers.
-    * Tests `=` and `eq?` for numbers, strings, and lists.
-* **functions** -
-    * Tests `define` and user-defined function calls.
-    * Tests different number of parameters.
-* **logic** -
-    * Tests `and?`, `or?`, `cond`, `if`, and `not`.
-    * Tests for proper short-circuting.
-* **operators** -
-    * Tests the main global-defined functions: `cons`, `car`, `cdr`, `eval`, `quote`, and `set`.
-* **type_checking** -
-    * Tests `list?`, `nil?`, `symbol?`, and `number?`.
+We have **41** test files, each with multiple tests, collectively covering every aspect of the Lisp programming language that we implemented. They are divided into the following categories:
+
+- **arithmetic**
+  - Tests `+`, `-`, `/`, `*`, `%`, and combinations thereof.
+- **equality** -
+  - Tests `>`, `>=`, `<`, and `<=` for numbers.
+  - Tests `=` and `eq?` for numbers, strings, and lists.
+- **functions** -
+  - Tests `define` and user-defined function calls.
+  - Tests different number of parameters.
+- **logic** -
+  - Tests `and?`, `or?`, `cond`, `if`, and `not`.
+  - Tests for proper short-circuting.
+- **operators** -
+  - Tests the main global-defined functions: `cons`, `car`, `cdr`, `eval`, `quote`, and `set`.
+- **type_checking** -
+  - Tests `list?`, `nil?`, `symbol?`, and `number?`.
 
 ### Sample Test Run
 
