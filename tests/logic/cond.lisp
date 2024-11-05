@@ -1,3 +1,5 @@
 (print (cond truth truth))
 (print (cond (= 1 1) 1))
 (print (cond (= 1 2) 1))
+(print (cond nil (print 1) truth (print 2)))
+(print (cond nil (print 1) nil (print 2) nil (print 3) nil (print 4)))

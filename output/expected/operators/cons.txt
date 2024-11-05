@@ -1,0 +1,5 @@
+(1 . 2)
+(1 . NIL)
+('a' . 'b')
+((1 2) . 'c')
+Error on line 5: cons function must have exactly two parameters

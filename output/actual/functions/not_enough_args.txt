@@ -1,0 +1,1 @@
+Error on line 2: function 'double' expects 1 parameters, but 0 were given

@@ -1,0 +1,5 @@
+(print (cons 1 2))
+(print (cons 1 nil))
+(print (cons "a" "b"))
+(print (cons (1 2 ) "c"))
+(print (cons 1))

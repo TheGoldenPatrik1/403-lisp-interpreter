@@ -28,10 +28,17 @@ public class Interpreter {
     }
 
     public Object visitDefine(List<SExpr> parameters) {
+        if (parameters.size() < 3) {
+            throw new RuntimeException("define function must have at least three parameters");
+        }
         String name = parameters.get(0).toString();
         SExprList following = new SExprList();
         following.add(parameters.get(1));
-        following.add(parameters.get(2));
+        SExprList body = new SExprList();
+        for (int i = 2; i < parameters.size(); i++) {
+            body.add(parameters.get(i));
+        }
+        following.add(body);
         Function func = new Function(name, following);
         environment.put(name, func);
         return null;
@@ -39,25 +46,31 @@ public class Interpreter {
 
     public Object visitFunction(Function function, Map<String, Object> prevEnv) {
         if (!environment.containsKey(function.getValue())) {
-            throw new RuntimeException("called undefined function");
+            throw new RuntimeException("called undefined function '" + function.getValue() + "'");
         }
         Function definition = (Function) environment.get(function.getValue());
         SExprList param = definition.getParameters();
-        String var = param.getList().get(0).toString();
+        String variable = param.getList().get(0).toString();
 
-        String stripped = var.replaceAll("[()]", "");
+        String stripped = variable.replaceAll("[()]", "");
         String[] split = stripped.trim().split("\\s+");
         List<String> listVar = Arrays.asList(split);
 
         List<SExpr> listIn = function.getParameters().getList();
 
         Map<String, Object> localEnvironment = new HashMap<>();
+        if (listVar.size() != listIn.size()) {
+            throw new RuntimeException("function '" + function.getValue() + "' expects " + listVar.size()
+                    + " parameters, but " + listIn.size() + " were given");
+        } 
         for (int i = 0; i < listVar.size(); i++) {
             localEnvironment.put(listVar.get(i), listIn.get(i).accept(this, prevEnv));
         }
+
         List<SExpr> body = param.getList().subList(1, param.getList().size());
+        List<SExpr> list = ((SExprList) body.get(0)).getList();
         Object result = null;
-        for (SExpr statement : body) {
+        for (SExpr statement : list) {
             result = statement.accept(this, localEnvironment);
         }
         return result;
@@ -130,11 +143,7 @@ public class Interpreter {
                 return parameters.get(0).accept(this, localEnvironment)
                         .equals(parameters.get(1).accept(this, localEnvironment));
             case "cons":
-                if (parameters.size() != 2) {
-                    throw new RuntimeException("cons function must have exactly two parameters");
-                }
-                // should we accept the parameters here?
-                return new Cons(parameters.get(0), parameters.get(1)).accept(this, localEnvironment);
+                return visitConsStatement(parameters, localEnvironment);
             case "car":
                 return visitCarStatement(parameters);
             case "cdr":
@@ -159,7 +168,7 @@ public class Interpreter {
             case "not":
                 return visitNotStatement(parameters, localEnvironment);
             case "cond":
-                return visitCondPairsStatement(parameters, localEnvironment);
+                return visitCondStatement(parameters, localEnvironment);
             case "and?":
             case "or?":
                 return visitConditionalStatement(functionName, parameters, localEnvironment);
@@ -249,20 +258,9 @@ public class Interpreter {
         if (parameters.size() != 1) {
             throw new RuntimeException("not function must have exactly one parameter");
         }
+
         SExpr param = parameters.get(0);
-        if (param instanceof Atom) {
-            return !((Atom) param).toBoolean();
-        }
-        if (param instanceof Function) {
-            return !param.accept(this, localEnvironment).equals(true);
-        }
-        if (param instanceof Symbol) {
-            return !((Symbol) param).toBoolean();
-        }
-        if (param instanceof SExprList) {
-            return !((SExprList) param).toBoolean();
-        }
-        return !param.accept(this, localEnvironment).equals(true);
+        return !paramToBoolean(param, localEnvironment);
     }
 
     private Object visitPrintStatement(List<SExpr> parameters, Map<String, Object> localEnvironment) {
@@ -274,11 +272,8 @@ public class Interpreter {
             if (result == null) {
                 return null;
             } else if (result instanceof Cons) {
-                SExprList list = new SExprList();
                 Cons cons = (Cons) result;
-                list.add(cons.getCar());
-                list.add(cons.getCdr());
-                System.out.println(list.accept(this, localEnvironment));
+                System.out.println(cons.toString());
                 return null;
             } else if (result.equals(true)) {
                 System.out.println("TRUTH");
@@ -304,109 +299,44 @@ public class Interpreter {
         return null;
     }
 
+    private boolean paramToBoolean(SExpr param, Map<String, Object> localEnvironment) {
+        boolean first = false;
+        if (param instanceof Atom) {
+            first = ((Atom) param).toBoolean();
+        } else if (param instanceof Function) {
+            Object firstValue = param.accept(this, localEnvironment);
+            first = firstValue != null && firstValue.equals(true);
+        } else if (param instanceof Symbol) {
+            first = ((Symbol) param).toBoolean();
+        } else if (param instanceof SExprList) {
+            first = ((SExprList) param).toBoolean();
+        }
+        return first;
+    }
+
     private Object visitConditionalStatement(String conditional, List<SExpr> parameters,
             Map<String, Object> localEnvironment) {
         if (parameters.size() != 2) {
             throw new RuntimeException("conditional function must have exactly two parameters");
         }
-        boolean first, second;
+
         SExpr param = parameters.get(0);
         SExpr paramSecond = parameters.get(1);
 
-        if ((param instanceof Atom && !(paramSecond instanceof Atom)) ||
-                (param instanceof Function && !(paramSecond instanceof Function)) ||
-                (param instanceof Symbol && !(paramSecond instanceof Symbol)) ||
-                (param instanceof SExprList && !(paramSecond instanceof SExprList))) {
-            throw new RuntimeException("conditional parameters do not match type");
-        }
+        boolean first = paramToBoolean(param, localEnvironment);
 
-        if (param instanceof Atom) {
-            first = ((Atom) param).toBoolean();
-            if (conditional.equals("and?")) {
-                if (first) {
-                    second = ((Atom) paramSecond).toBoolean();
-                    if (second)
-                        return true;
-                }
-                return false;
-            } else {
-                if (first) {
-                    return true;
-                } else {
-                    second = ((Atom) paramSecond).toBoolean();
-                    return second;
-                }
-            }
-        }
-        if (param instanceof Function) {
-            first = param.accept(this, localEnvironment).equals(true);
-            if (conditional.equals("and?")) {
-                if (first) {
-                    second = paramSecond.accept(this, localEnvironment).equals(true);
-                    if (second)
-                        return true;
-                }
-                return false;
-            } else {
-                if (first) {
-                    return true;
-                } else {
-                    second = paramSecond.accept(this, localEnvironment).equals(true);
-                    return second;
-                }
-            }
-        }
-        if (param instanceof Symbol) {
-            first = ((Symbol) param).toBoolean();
-            if (conditional.equals("and?")) {
-                if (first) {
-                    second = ((Symbol) paramSecond).toBoolean();
-                    if (second)
-                        return true;
-                }
-                return false;
-            } else {
-                if (first) {
-                    return true;
-                } else {
-                    second = ((Symbol) paramSecond).toBoolean();
-                    return second;
-                }
-            }
-        }
-        if (param instanceof SExprList) {
-            first = ((SExprList) param).toBoolean();
-            if (conditional.equals("and?")) {
-                if (first) {
-                    second = ((SExprList) paramSecond).toBoolean();
-                    if (second)
-                        return true;
-                }
-                return false;
-            } else {
-                if (first) {
-                    return true;
-                } else {
-                    second = ((SExprList) paramSecond).toBoolean();
-                    return second;
-                }
-            }
-        }
-        first = param.accept(this, localEnvironment).equals(true);
-        if (conditional.equals("and?")) {
-            if (first) {
-                second = paramSecond.accept(this, localEnvironment).equals(true);
-                if (second)
-                    return true;
-            }
+        if (conditional.equals("and?") && !first) {
             return false;
+        } else if (conditional.equals("or?") && first) {
+            return true;
+        }
+        
+        boolean second = paramToBoolean(paramSecond, localEnvironment);
+
+        if (conditional.equals("and?")) {
+            return first && second;
         } else {
-            if (first) {
-                return true;
-            } else {
-                second = paramSecond.accept(this, localEnvironment).equals(true);
-                return second;
-            }
+            return first || second;
         }
     }
 
@@ -414,22 +344,12 @@ public class Interpreter {
         if (parameters.size() != 3) {
             throw new RuntimeException("if function must have exactly three parameters");
         }
-        boolean first;
+
         SExpr param = parameters.get(0);
         SExpr paramSecond = parameters.get(1);
         SExpr paramThird = parameters.get(2);
 
-        if (param instanceof Atom) {
-            first = ((Atom) param).toBoolean();
-        } else if (param instanceof Function) {
-            first = param.accept(this, localEnvironment).equals(true);
-        } else if (param instanceof Symbol) {
-            first = ((Symbol) param).toBoolean();
-        } else if (param instanceof SExprList) {
-            first = ((SExprList) param).toBoolean();
-        } else {
-            first = param.accept(this, localEnvironment).equals(true);
-        }
+        boolean first = paramToBoolean(param, localEnvironment);
 
         if (first) {
             return paramSecond.accept(this, localEnvironment);
@@ -437,33 +357,48 @@ public class Interpreter {
         return paramThird.accept(this, localEnvironment);
     }
 
-    private Object visitCondPairsStatement(List<SExpr> parameters, Map<String, Object> localEnvironment) {
-        if (parameters.size() != 2) {
-            throw new RuntimeException("Cond statement must have exactly two parameters");
+    private Object visitCondStatement(List<SExpr> parameters, Map<String, Object> localEnvironment) {
+        if (parameters.size() % 2 != 0) {
+            throw new RuntimeException("cond statement must have an even number of parameters");
         }
-        boolean first;
-        SExpr param = parameters.get(0);
-        SExpr paramSecond = parameters.get(1);
 
-        if (param instanceof Atom) {
-            first = ((Atom) param).toBoolean();
-        } else if (param instanceof Function) {
-            first = param.accept(this, localEnvironment).equals(true);
-        } else if (param instanceof Symbol) {
-            first = ((Symbol) param).toBoolean();
-        } else if (param instanceof SExprList) {
-            first = ((SExprList) param).toBoolean();
-        } else {
-            first = param.accept(this, localEnvironment).equals(true);
+        for (int i = 0; i < parameters.size(); i += 2) {
+            SExpr condition = parameters.get(i);
+            SExpr result = parameters.get(i + 1);
+
+            if (condition instanceof Symbol && condition.toString().equals("else")) {
+                return result.accept(this, localEnvironment);
+            }
+
+            if (paramToBoolean(condition, localEnvironment)) {
+                return result.accept(this, localEnvironment);
+            }
         }
-        if (first) {
-            return paramSecond.accept(this, localEnvironment);
-        }
+
         return Nil.INSTANCE;
     }
 
+    private Object visitConsStatement(List<SExpr> parameters, Map<String, Object> localEnvironment) {
+        if (parameters.size() != 2) {
+            throw new RuntimeException("cons function must have exactly two parameters");
+        }
+        SExpr first = parameters.get(0);
+        SExpr second = parameters.get(1);
+        if (second instanceof SExprList) {
+            SExprList list = (SExprList) second;
+            list.prepend(first);
+            return list.accept(this, localEnvironment);
+        }
+        return new Cons(first, second);
+    }
+
     private Object visitCarStatement(List<SExpr> parameters) {
-        SExprList list = (SExprList) parameters.get(0);
+        SExpr param = parameters.get(0);
+        Object paramValue = param.accept(this, new HashMap<>());
+        if (paramValue instanceof Cons) {
+            return ((Cons) paramValue).getCar();
+        }
+        SExprList list = (SExprList) param;
         List<SExpr> separate = list.getList();
         if (separate.isEmpty())
             return Nil.INSTANCE;
@@ -471,6 +406,11 @@ public class Interpreter {
     }
 
     private Object visitCdrStatement(List<SExpr> parameters) {
+        SExpr param = parameters.get(0);
+        Object paramValue = param.accept(this, new HashMap<>());
+        if (paramValue instanceof Cons) {
+            return ((Cons) paramValue).getCdr();
+        }
         SExprList list = (SExprList) parameters.get(0);
         List<SExpr> separate = list.getList();
         SExprList newList = new SExprList();

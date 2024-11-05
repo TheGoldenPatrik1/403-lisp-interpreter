@@ -15,6 +15,10 @@ public class SExprList extends SExpr {
         expressions.add(expr);
     }
 
+    public void prepend(SExpr expr) {
+        expressions.add(0, expr);
+    }
+
     public List<SExpr> getList() {
         return expressions;
     }

@@ -1,3 +1,5 @@
 TRUTH
 1.0
 NIL
+2.0
+NIL
