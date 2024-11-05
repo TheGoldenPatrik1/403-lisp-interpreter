@@ -1,0 +1,5 @@
+(define abs (x)
+  (cond (>= x 0) x (< x 0) (- 0 x)))
+(print (abs -5))
+(print (abs 0))
+(print (abs 5))

@@ -1,5 +1,5 @@
 Compiling 13 files in src/lispinterpreter...
-Running 39 tests...
+Running 41 tests...
 
 Test 'type_checking_list' ... [32mPASSED[0m
 Test 'type_checking_nil' ... [32mPASSED[0m
@@ -14,6 +14,7 @@ Test 'operators_cdr' ... [32mPASSED[0m
 Test 'operators_cons_list' ... [32mPASSED[0m
 Test 'logic_short_circuit' ... [32mPASSED[0m
 Test 'logic_cond' ... [32mPASSED[0m
+Test 'logic_advanced_cond' ... [32mPASSED[0m
 Test 'logic_not' ... [32mPASSED[0m
 Test 'logic_if' ... [32mPASSED[0m
 Test 'logic_or' ... [32mPASSED[0m
@@ -39,10 +40,11 @@ Test 'functions_large_body' ... [32mPASSED[0m
 Test 'functions_invalid_define' ... [32mPASSED[0m
 Test 'functions_call_undefined' ... [32mPASSED[0m
 Test 'functions_define' ... [32mPASSED[0m
+Test 'functions_variable_scoping' ... [32mPASSED[0m
 Test 'functions_factorial' ... [32mPASSED[0m
 
 Tests completed with result: [32mSUCCESS[0m
 Errors: 0
-Successes: 39
+Successes: 41
 Failures: 0
-Duration: 0.08s
+Duration: 0.06s

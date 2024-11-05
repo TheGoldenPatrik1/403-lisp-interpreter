@@ -1,0 +1,5 @@
+(set x 10)
+(define test (x) (+ x 5))
+
+(print (test 3))
+(print x)
