@@ -1,0 +1,48 @@
+Compiling 13 files in src/lispinterpreter...
+Running 39 tests...
+
+Test 'type_checking_list' ... [32mPASSED[0m
+Test 'type_checking_nil' ... [32mPASSED[0m
+Test 'type_checking_number' ... [32mPASSED[0m
+Test 'type_checking_symbol' ... [32mPASSED[0m
+Test 'operators_quote' ... [32mPASSED[0m
+Test 'operators_eval' ... [32mPASSED[0m
+Test 'operators_car' ... [32mPASSED[0m
+Test 'operators_cons' ... [32mPASSED[0m
+Test 'operators_set' ... [32mPASSED[0m
+Test 'operators_cdr' ... [32mPASSED[0m
+Test 'operators_cons_list' ... [32mPASSED[0m
+Test 'logic_short_circuit' ... [32mPASSED[0m
+Test 'logic_cond' ... [32mPASSED[0m
+Test 'logic_not' ... [32mPASSED[0m
+Test 'logic_if' ... [32mPASSED[0m
+Test 'logic_or' ... [32mPASSED[0m
+Test 'logic_and' ... [32mPASSED[0m
+Test 'equality_strings' ... [32mPASSED[0m
+Test 'equality_lists' ... [32mPASSED[0m
+Test 'equality_mismatch' ... [32mPASSED[0m
+Test 'equality_numbers' ... [32mPASSED[0m
+Test 'equality_comparison' ... [32mPASSED[0m
+Test 'arithmetic_add' ... [32mPASSED[0m
+Test 'arithmetic_multiply' ... [32mPASSED[0m
+Test 'arithmetic_combination' ... [32mPASSED[0m
+Test 'arithmetic_mod' ... [32mPASSED[0m
+Test 'arithmetic_subtract' ... [32mPASSED[0m
+Test 'arithmetic_divide' ... [32mPASSED[0m
+Test 'functions_three_parameters' ... [32mPASSED[0m
+Test 'functions_two_function' ... [32mPASSED[0m
+Test 'functions_multiple_expressions' ... [32mPASSED[0m
+Test 'functions_function_in_function' ... [32mPASSED[0m
+Test 'functions_not_enough_args' ... [32mPASSED[0m
+Test 'functions_too_many_args' ... [32mPASSED[0m
+Test 'functions_large_body' ... [32mPASSED[0m
+Test 'functions_invalid_define' ... [32mPASSED[0m
+Test 'functions_call_undefined' ... [32mPASSED[0m
+Test 'functions_define' ... [32mPASSED[0m
+Test 'functions_factorial' ... [32mPASSED[0m
+
+Tests completed with result: [32mSUCCESS[0m
+Errors: 0
+Successes: 39
+Failures: 0
+Duration: 0.08s

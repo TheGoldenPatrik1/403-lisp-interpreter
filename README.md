@@ -25,12 +25,12 @@ We added tests as we proceeded through each sprint, in order to test features as
 
 ### Testing Plan
 
-We have **TBD** tests, covering every aspect of the Lisp programming language that we implemented. They are divided into the following categories:
+We have **39** test files, each with multiple tests, collectively covering every aspect of the Lisp programming language that we implemented. They are divided into the following categories:
 * **arithmetic**
     * Tests `+`, `-`, `/`, `*`, `%`, and combinations thereof.
 * **equality** -
     * Tests `>`, `>=`, `<`, and `<=` for numbers.
-    * Tests `=` for numbers, strings, and lists.
+    * Tests `=` and `eq?` for numbers, strings, and lists.
 * **functions** -
     * Tests `define` and user-defined function calls.
     * Tests different number of parameters.
